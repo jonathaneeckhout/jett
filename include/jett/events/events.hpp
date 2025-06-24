@@ -3,8 +3,6 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
-#include <functional>
-#include <stdexcept>
 
 #include "jett/events/event.hpp"
 
@@ -28,7 +26,7 @@ public:
     }
 
     template <typename... Args>
-    int addHandler(const std::string &name, void (*handler)(Args ...))
+    int addHandler(const std::string &name, void (*handler)(Args...))
     {
         EventBase *base_event = getEvent(name);
 
