@@ -7,11 +7,13 @@
 #include <cstdint>
 
 #include "jett/core/renderer.hpp"
+#include "jett/core/controls.hpp"
 
 struct GameContext
 {
     entt::registry &registry;
     Renderer &renderer;
+    Controls &controls;
 };
 
 class Game
@@ -40,13 +42,18 @@ public:
     std::uint32_t registerRenderSystem(std::function<void(GameContext &)> systemFn);
     void unregisterRenderSystem(std::uint32_t id);
 
+    Controls &getControls() { return *controls_; }
+
 private:
     bool running_ = false;
     double period_per_update_;
     double period_per_render_;
+
     entt::registry registry_;
 
     Renderer *renderer_ = nullptr;
+
+    Controls *controls_ = nullptr;
 
     struct SystemRefCount
     {

@@ -11,11 +11,13 @@ Game::Game(
     std::uint32_t update_fps,
     std::uint32_t render_fps)
 {
-    if (update_fps == 0) {
+    if (update_fps == 0)
+    {
         throw std::invalid_argument("Update FPS must be greater than 0.");
     }
 
-    if (render_fps == 0) {
+    if (render_fps == 0)
+    {
         throw std::invalid_argument("Render FPS must be greater than 0.");
     }
 
@@ -23,10 +25,15 @@ Game::Game(
     period_per_render_ = render_fps > 0 ? 1.0 / render_fps : 0;
 
     renderer_ = new Renderer(title, window_size);
+
+    controls_ = new Controls();
 }
 
 Game::~Game()
 {
+    delete controls_;
+    controls_ = nullptr;
+
     delete renderer_;
     renderer_ = nullptr;
 }
@@ -47,7 +54,10 @@ void Game::run()
         previous_time = current_time;
         lag += elapsed.count();
 
-        GameContext ctx = {.registry = registry_, .renderer = *renderer_};
+        GameContext ctx = {
+            .registry = registry_,
+            .renderer = *renderer_,
+            .controls = *controls_};
 
         input(ctx);
 
@@ -78,6 +88,8 @@ void Game::stop()
 
 void Game::input(GameContext &ctx)
 {
+    controls_->input();
+
     for (auto &[id, systemRefCount] : input_systems_)
     {
         systemRefCount.systemFn(ctx);
