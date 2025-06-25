@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "jett/vector.hpp"
+#include "jett/utils/vector.hpp"
 
 class Renderer
 {

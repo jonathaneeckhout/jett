@@ -1,11 +1,19 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-#include "jett/vector.hpp"
+#include "jett/utils/vector.hpp"
+
+enum ButtonState
+{
+    BUTTON_IDLE,
+    BUTTON_SELECTED,
+    BUTTON_PRESSED
+};
 
 struct ButtonComponent
 {
-    bool is_pressed = false;
-    SDL_Color color;
-    Vector size;
+    ButtonState state;
+    SDL_Color idle_color;
+    SDL_Color selected_color;
+    SDL_Color pressed_color;
 };

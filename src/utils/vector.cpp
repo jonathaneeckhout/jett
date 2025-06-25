@@ -1,4 +1,4 @@
-#include "jett/vector.hpp"
+#include "jett/utils/vector.hpp"
 
 float Vector::magnitude() const
 {

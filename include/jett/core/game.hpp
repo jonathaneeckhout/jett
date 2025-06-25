@@ -12,6 +12,7 @@
 struct GameContext
 {
     entt::registry &registry;
+    entt::dispatcher &dispatcher;
     Renderer &renderer;
     Controls &controls;
 };
@@ -33,6 +34,8 @@ public:
 
     entt::registry &getRegistry() { return registry_; };
 
+    entt::dispatcher &getDispatcher() { return dispatcher_; };
+
     std::uint32_t registerInputSystem(std::function<void(GameContext &)> systemFn);
     void unregisterInputSystem(std::uint32_t id);
 
@@ -50,6 +53,8 @@ private:
     double period_per_render_;
 
     entt::registry registry_;
+
+    entt::dispatcher dispatcher_;
 
     Renderer *renderer_ = nullptr;
 

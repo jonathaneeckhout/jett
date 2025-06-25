@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "jett/core/game.hpp"
+#include "jett/systems/events.hpp"
 
 Game::Game(
     const std::string &title,
@@ -56,6 +57,7 @@ void Game::run()
 
         GameContext ctx = {
             .registry = registry_,
+            .dispatcher = dispatcher_,
             .renderer = *renderer_,
             .controls = *controls_};
 
@@ -98,6 +100,8 @@ void Game::input(GameContext &ctx)
 
 void Game::update(GameContext &ctx)
 {
+    sendEvents(ctx);
+
     for (auto &[id, systemRefCount] : update_systems_)
     {
         systemRefCount.systemFn(ctx);

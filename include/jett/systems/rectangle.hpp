@@ -2,4 +2,4 @@
 
 #include "jett/core/game.hpp"
 
-void handleButtonInput(GameContext &ctx);
+void renderRectangle(GameContext &ctx);

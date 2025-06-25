@@ -1,8 +1,8 @@
 #pragma once
 
-#include "jett/vector.hpp"
+#include "jett/utils/vector.hpp"
 
 struct TransformComponent
 {
-    Vector position = {0.0, 0.0};
+    Vector position = Vector();
 };

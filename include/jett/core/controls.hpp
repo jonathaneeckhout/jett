@@ -1,12 +1,16 @@
 #pragma once
 
+#include <entt/entt.hpp>
 #include <SDL3/SDL.h>
 #include <string>
 #include <functional>
 #include <unordered_map>
 
-#include "jett/vector.hpp"
-#include "jett/events/events.hpp"
+#include "jett/utils/vector.hpp"
+
+#include "jett/events/key.hpp"
+#include "jett/events/mouse.hpp"
+#include "jett/events/quit.hpp"
 
 class Controls
 {
@@ -24,22 +28,41 @@ public:
 
     void input();
 
-    int addQuitHandler(void (*handler)());
-    void removeQuitHandler(int id);
+    template <typename EventType, auto Handler>
+    void addEventHandler()
+    {
+        auto sink = dispatcher_.sink<EventType>();
+        sink.template connect<Handler>();
+    };
 
-    int addKeyHandler(void (*handler)(std::string key, bool pressed));
-    void removeKeyHandler(int id);
-
-    int addMouseHandler(void (*handler)(MouseEventType event_type, bool pressed, Vector mouse_position));
-    void removeMouseHandler(int id);
+    template <typename EventType, auto Handler>
+    void removeEventHandler()
+    {
+        auto sink = dispatcher_.sink<EventType>();
+        sink.template disconnect<Handler>();
+    };
 
     void registerKeys(const std::string &name, const std::string &key);
     const std::string getMapping(const std::string &name);
     bool isMapping(const std::string &name, const std::string &key);
     void clearMappings();
 
+    Vector getMousePosition() { return mouse_position_; };
+    Vector getMousePressedPosition() { return mouse_pressed_position_; };
+    Vector getMouseReleasedPosition() { return mouse_released_position_; };
+
+    bool isMouseButtonPressed(MouseEventType type);
+
 private:
-    Events events_;
+    entt::dispatcher dispatcher_;
+
+    Vector mouse_position_ = Vector();
+    Vector mouse_pressed_position_ = Vector();
+    Vector mouse_released_position_ = Vector();
+
+    bool left_mouse_button_pressed = false;
+    bool right_mouse_button_pressed = false;
+    bool middle_mouse_button_pressed = false;
 
     std::unordered_map<std::string, std::string> key_mappings_;
 };
