@@ -1,4 +1,4 @@
-#include "jett/entities/ui/button.hpp"
+#include "jett/objects/ui/button.hpp"
 
 #include "jett/components/transform.hpp"
 #include "jett/components/button.hpp"
@@ -8,10 +8,8 @@
 #include "jett/systems/button.hpp"
 #include "jett/systems/rectangle.hpp"
 
-Button::Button(Game &game, Vector position, Vector size) : game_(game)
+Button::Button(Game &game, Vector position, Vector size) : GameObject(game)
 {
-    entity_ = game.createEntity();
-
     game.getRegistry().emplace<TransformComponent>(entity_, position);
 
     game.getRegistry().emplace<ButtonComponent>(
@@ -25,8 +23,6 @@ Button::Button(Game &game, Vector position, Vector size) : game_(game)
         entity_,
         size,
         SDL_Color{32, 32, 32, 255});
-
-    game.getRegistry().emplace<EventsComponent>(entity_);
 
     handle_button_input_system_id = game.registerInputSystem(handleButtonInput);
 

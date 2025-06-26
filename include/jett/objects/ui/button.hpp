@@ -2,20 +2,15 @@
 
 #include <entt/entt.hpp>
 
-#include "jett/core/game.hpp"
+#include "jett/objects/game_object.hpp"
 
-class Button
+class Button : public GameObject
 {
 public:
     Button(Game &game, Vector position, Vector size);
     ~Button();
 
-    const entt::entity &getEntity() { return entity_; };
-
 private:
-    entt::entity entity_;
-    Game &game_;
-
     std::uint32_t render_button_system_id;
     std::uint32_t handle_button_input_system_id;
 };
