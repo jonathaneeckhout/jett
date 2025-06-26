@@ -45,7 +45,7 @@ void Game::run()
     using namespace std::chrono;
 
     running_ = true;
-    auto lag = 0.0;
+    double lag = 0.0;
     auto previous_time = clock::now();
 
     while (running_)
@@ -73,13 +73,13 @@ void Game::run()
         render(ctx);
 
         auto frame_end = clock::now();
-        duration<double> frame_elapsed = frame_end - current_time;
-        double frame_time = frame_elapsed.count();
+        duration<double> frame_duration = frame_end - current_time;
 
+        double frame_time = frame_duration.count();
         if (frame_time < period_per_render_)
         {
             auto sleep_time = duration<double>(period_per_render_ - frame_time);
-            std::this_thread::sleep_for(duration_cast<seconds>(sleep_time));
+            std::this_thread::sleep_for(sleep_time);
         }
     }
 }
