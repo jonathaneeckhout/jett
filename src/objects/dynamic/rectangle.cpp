@@ -9,20 +9,15 @@
 
 Rectangle::Rectangle(Game &game, Vector position, Vector size, SDL_Color color) : GameObject(game)
 {
-    game.getRegistry().emplace<TransformComponent>(entity_, position);
+    emplace<TransformComponent>(position);
 
-    game.getRegistry().emplace<VelocityComponent>(entity_, Vector());
+    emplace<VelocityComponent>(Vector());
 
-    game.getRegistry().emplace<RectangleComponent>(entity_, size, color);
+    emplace<RectangleComponent>(size, color);
 
-    movement_system_id = game.registerUpdateSystem(moveSystem);
+    registerUpdateSystem(moveSystem);
 
-    rect_system_id = game.registerRenderSystem(renderRectangleSystem);
+    registerRenderSystem(renderRectangleSystem);
 }
 
-Rectangle::~Rectangle()
-{
-    game_.unregisterUpdateSystem(movement_system_id);
-
-    game_.unregisterRenderSystem(rect_system_id);
-}
+Rectangle::~Rectangle() {}

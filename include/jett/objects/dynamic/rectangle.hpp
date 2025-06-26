@@ -10,8 +10,4 @@ class Rectangle : public GameObject
 public:
     Rectangle(Game &game, Vector position, Vector size, SDL_Color color);
     ~Rectangle();
-
-private:
-    std::uint32_t movement_system_id;
-    std::uint32_t rect_system_id;
 };

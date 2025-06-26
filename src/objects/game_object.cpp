@@ -17,6 +17,10 @@ GameObject::GameObject(Game &game) : game_(game)
 
 GameObject::~GameObject()
 {
+    unregisterAllInputSystems();
+    unregisterAllUpdateSystems();
+    unregisterAllRenderSystems();
+
     game_.removeEntity(entity_);
 }
 
@@ -28,4 +32,79 @@ bool GameObject::addChild(entt::entity child)
 bool GameObject::removeChild(entt::entity child)
 {
     return removeChildFromParent(game_.getRegistry(), entity_, child);
+}
+
+std::uint32_t GameObject::registerInputSystem(std::function<void(GameContext &)> systemFn)
+{
+    std::uint32_t system_id = game_.registerInputSystem(systemFn);
+
+    input_systems_.push_back(system_id);
+
+    return system_id;
+}
+
+void GameObject::unregisterInputSystem(std::uint32_t id)
+{
+    game_.unregisterInputSystem(id);
+
+    input_systems_.erase(std::remove(input_systems_.begin(), input_systems_.end(), id), input_systems_.end());
+}
+
+void GameObject::unregisterAllInputSystems()
+{
+    for (auto id : input_systems_)
+    {
+        game_.unregisterInputSystem(id);
+    }
+    input_systems_.clear();
+}
+
+std::uint32_t GameObject::registerUpdateSystem(std::function<void(GameContext &)> systemFn)
+{
+    std::uint32_t system_id = game_.registerUpdateSystem(systemFn);
+
+    update_systems_.push_back(system_id);
+
+    return system_id;
+}
+
+void GameObject::unregisterUpdateSystem(std::uint32_t id)
+{
+    game_.unregisterUpdateSystem(id);
+
+    update_systems_.erase(std::remove(update_systems_.begin(), update_systems_.end(), id), update_systems_.end());
+}
+
+void GameObject::unregisterAllUpdateSystems()
+{
+    for (auto id : update_systems_)
+    {
+        game_.unregisterUpdateSystem(id);
+    }
+    update_systems_.clear();
+}
+
+std::uint32_t GameObject::registerRenderSystem(std::function<void(GameContext &)> systemFn)
+{
+    std::uint32_t system_id = game_.registerRenderSystem(systemFn);
+
+    render_systems_.push_back(system_id);
+
+    return system_id;
+}
+
+void GameObject::unregisterRenderSystem(std::uint32_t id)
+{
+    game_.unregisterRenderSystem(id);
+
+    render_systems_.erase(std::remove(render_systems_.begin(), render_systems_.end(), id), render_systems_.end());
+}
+
+void GameObject::unregisterAllRenderSystems()
+{
+    for (auto id : render_systems_)
+    {
+        game_.unregisterRenderSystem(id);
+    }
+    render_systems_.clear();
 }

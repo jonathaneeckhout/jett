@@ -10,28 +10,21 @@
 
 Button::Button(Game &game, Vector position, Vector size) : GameObject(game)
 {
-    game.getRegistry().emplace<TransformComponent>(entity_, position);
+    emplace<TransformComponent>(position);
 
-    game.getRegistry().emplace<ButtonComponent>(
-        entity_,
+    emplace<ButtonComponent>(
         BUTTON_IDLE,
         SDL_Color{32, 32, 32, 255},
         SDL_Color{128, 128, 128, 255},
         SDL_Color{196, 196, 196, 255});
 
-    game.getRegistry().emplace<RectangleComponent>(
-        entity_,
+    emplace<RectangleComponent>(
         size,
         SDL_Color{32, 32, 32, 255});
 
-    handle_button_input_system_id = game.registerInputSystem(handleButtonInputSystem);
+    registerInputSystem(handleButtonInputSystem);
 
-    render_button_system_id = game.registerRenderSystem(renderRectangleSystem);
+    registerRenderSystem(renderRectangleSystem);
 }
 
-Button::~Button()
-{
-    game_.unregisterRenderSystem(render_button_system_id);
-
-    game_.unregisterRenderSystem(handle_button_input_system_id);
-}
+Button::~Button() {}
