@@ -15,6 +15,7 @@ struct GameContext
     entt::dispatcher &dispatcher;
     Renderer &renderer;
     Controls &controls;
+    double delta;
 };
 
 class Game

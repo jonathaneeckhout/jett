@@ -2,4 +2,4 @@
 
 #include "jett/core/game.hpp"
 
-void sendEventsSystem(GameContext &ctx);
+void moveSystem(GameContext &ctx);

@@ -59,7 +59,8 @@ void Game::run()
             .registry = registry_,
             .dispatcher = dispatcher_,
             .renderer = *renderer_,
-            .controls = *controls_};
+            .controls = *controls_,
+            .delta = period_per_update_};
 
         input(ctx);
 
@@ -100,7 +101,7 @@ void Game::input(GameContext &ctx)
 
 void Game::update(GameContext &ctx)
 {
-    sendEvents(ctx);
+    sendEventsSystem(ctx);
 
     for (auto &[id, systemRefCount] : update_systems_)
     {

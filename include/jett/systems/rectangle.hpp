@@ -2,4 +2,4 @@
 
 #include "jett/core/game.hpp"
 
-void renderRectangle(GameContext &ctx);
+void renderRectangleSystem(GameContext &ctx);

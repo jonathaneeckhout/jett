@@ -3,7 +3,7 @@
 #include "jett/components/transform.hpp"
 #include "jett/components/rectangle.hpp"
 
-void renderRectangle(GameContext &ctx)
+void renderRectangleSystem(GameContext &ctx)
 {
     auto view = ctx.registry.view<TransformComponent, RectangleComponent>();
     for (auto entity : view)

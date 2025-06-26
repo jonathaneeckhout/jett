@@ -6,6 +6,7 @@
 #include <jett/components/parent.hpp>
 #include <jett/components/rectangle.hpp>
 #include <jett/components/transform.hpp>
+#include <jett/components/velocity.hpp>
 
 #include <jett/core/controls.hpp>
 #include <jett/core/game.hpp>
@@ -17,6 +18,7 @@
 #include <jett/events/quit.hpp>
 
 #include <jett/objects/game_object.hpp>
+#include <jett/objects/dynamic/rectangle.hpp>
 #include <jett/objects/ui/button.hpp>
 
 #include <jett/utils/children.hpp>

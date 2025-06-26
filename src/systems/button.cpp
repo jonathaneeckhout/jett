@@ -9,7 +9,7 @@
 #include "jett/events/button.hpp"
 #include "jett/utils/collision.hpp"
 
-void handleButtonInput(GameContext &ctx)
+void handleButtonInputSystem(GameContext &ctx)
 {
     auto view = ctx.registry.view<TransformComponent,
                                   ButtonComponent,

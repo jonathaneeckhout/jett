@@ -2,7 +2,7 @@
 
 #include "jett/components/events.hpp"
 
-void sendEvents(GameContext &ctx)
+void sendEventsSystem(GameContext &ctx)
 {
     auto view = ctx.registry.view<EventsComponent>();
     for (auto entity : view)

@@ -24,9 +24,9 @@ Button::Button(Game &game, Vector position, Vector size) : GameObject(game)
         size,
         SDL_Color{32, 32, 32, 255});
 
-    handle_button_input_system_id = game.registerInputSystem(handleButtonInput);
+    handle_button_input_system_id = game.registerInputSystem(handleButtonInputSystem);
 
-    render_button_system_id = game.registerRenderSystem(renderRectangle);
+    render_button_system_id = game.registerRenderSystem(renderRectangleSystem);
 }
 
 Button::~Button()
@@ -34,6 +34,4 @@ Button::~Button()
     game_.unregisterRenderSystem(render_button_system_id);
 
     game_.unregisterRenderSystem(handle_button_input_system_id);
-
-    game_.removeEntity(entity_);
 }
