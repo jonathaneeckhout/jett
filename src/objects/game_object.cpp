@@ -24,14 +24,14 @@ GameObject::~GameObject()
     game_.removeEntity(entity_);
 }
 
-bool GameObject::addChild(entt::entity child)
+bool GameObject::addChild(GameObject &child)
 {
-    return addChildToParent(game_.getRegistry(), entity_, child);
+    return addChildToParent(game_.getRegistry(), entity_, child.getEntity());
 }
 
-bool GameObject::removeChild(entt::entity child)
+bool GameObject::removeChild(GameObject &child)
 {
-    return removeChildFromParent(game_.getRegistry(), entity_, child);
+    return removeChildFromParent(game_.getRegistry(), entity_, child.getEntity());
 }
 
 std::uint32_t GameObject::registerInputSystem(std::function<void(GameContext &)> systemFn)

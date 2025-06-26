@@ -42,8 +42,8 @@ public:
         return game_.getRegistry().get<ComponentType>(entity_);
     }
 
-    bool addChild(entt::entity child);
-    bool removeChild(entt::entity child);
+    bool addChild(GameObject &child);
+    bool removeChild(GameObject &child);
 
     std::uint32_t registerInputSystem(std::function<void(GameContext &)> systemFn);
     void unregisterInputSystem(std::uint32_t id);
