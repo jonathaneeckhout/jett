@@ -34,6 +34,10 @@ public:
         return game_.getRegistry().get<ComponentType>(entity_);
     }
 
+    bool addChild(entt::entity child);
+
+    bool removeChild(entt::entity child);
+
 protected:
     entt::entity entity_;
     Game &game_;

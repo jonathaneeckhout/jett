@@ -4,6 +4,24 @@
 #include "jett/components/velocity.hpp"
 #include "jett/components/children.hpp"
 
+static void updatePositionRecursively(entt::registry &registry, entt::entity entity, const Vector &delta_position)
+{
+    if (registry.all_of<TransformComponent>(entity))
+    {
+        auto &transform = registry.get<TransformComponent>(entity);
+        transform.position += delta_position;
+    }
+
+    if (registry.all_of<ChildrenComponent>(entity))
+    {
+        auto &children = registry.get<ChildrenComponent>(entity);
+        for (auto &child : children.children)
+        {
+            updatePositionRecursively(registry, child, delta_position);
+        }
+    }
+}
+
 void moveSystem(GameContext &ctx)
 {
     auto view = ctx.registry.view<TransformComponent, VelocityComponent, ChildrenComponent>();
@@ -11,20 +29,13 @@ void moveSystem(GameContext &ctx)
     {
         auto [transform, velocity, children] = view.get<TransformComponent, VelocityComponent, ChildrenComponent>(entity);
 
-        if (velocity.velocity == Vector(0, 0))
+        if (velocity.velocity == Vector{0, 0})
         {
             continue;
         }
 
         auto delta_position = velocity.velocity * ctx.delta;
 
-        transform.position += delta_position;
-
-        for (auto &child : children.children)
-        {
-            auto &child_transform = ctx.registry.get<TransformComponent>(child);
-
-            child_transform.position += delta_position;
-        }
+        updatePositionRecursively(ctx.registry, entity, delta_position);
     }
 }
