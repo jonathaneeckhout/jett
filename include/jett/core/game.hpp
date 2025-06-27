@@ -33,6 +33,13 @@ public:
     entt::entity createEntity();
     void removeEntity(entt::entity entity);
 
+    void addObject(entt::entity entity, class GameObject *object);
+    void removeObject(entt::entity entity);
+
+    void queueForDeletion_(entt::entity entity);
+
+    class GameObject *getObject(entt::entity entity);
+
     entt::registry &getRegistry() { return registry_; };
 
     entt::dispatcher &getDispatcher() { return dispatcher_; };
@@ -54,6 +61,9 @@ private:
     double period_per_render_;
 
     entt::registry registry_;
+
+    std::unordered_map<entt::entity, class GameObject *> objects_;
+    std::vector<entt::entity> to_be_deleted_objects_;
 
     entt::dispatcher dispatcher_;
 
@@ -83,4 +93,7 @@ private:
     void unregisterSystem(
         std::uint32_t id,
         std::unordered_map<std::uint32_t, SystemRefCount> &map);
+
+    void deleteQueuedObjects();
+    void cleanAllObjects();
 };

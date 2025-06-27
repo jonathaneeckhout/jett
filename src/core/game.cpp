@@ -2,8 +2,10 @@
 #include <thread>
 #include <libassert/assert.hpp>
 #include <stdexcept>
+#include <vector>
 
 #include "jett/core/game.hpp"
+#include "jett/objects/game_object.hpp"
 #include "jett/systems/events.hpp"
 
 Game::Game(
@@ -32,6 +34,8 @@ Game::Game(
 
 Game::~Game()
 {
+    cleanAllObjects();
+
     delete controls_;
     controls_ = nullptr;
 
@@ -107,6 +111,8 @@ void Game::update(GameContext &ctx)
     {
         systemRefCount.systemFn(ctx);
     }
+
+    deleteQueuedObjects();
 }
 
 void Game::render(GameContext &ctx)
@@ -132,6 +138,63 @@ void Game::removeEntity(entt::entity entity)
     {
         registry_.destroy(entity);
     }
+}
+
+void Game::addObject(entt::entity entity, GameObject *object)
+{
+    objects_[entity] = object;
+}
+
+void Game::removeObject(entt::entity entity)
+{
+    objects_.erase(entity);
+}
+
+GameObject *Game::getObject(entt::entity entity)
+{
+    auto it = objects_.find(entity);
+    if (it == objects_.end())
+    {
+        return nullptr;
+    }
+
+    return it->second;
+}
+
+void Game::queueForDeletion_(entt::entity entity)
+{
+    to_be_deleted_objects_.push_back(entity);
+}
+
+void Game::deleteQueuedObjects()
+{
+    for (auto entry : to_be_deleted_objects_)
+    {
+        auto obj = getObject(entry);
+        if (obj != nullptr)
+        {
+            delete obj;
+        }
+    }
+
+    to_be_deleted_objects_.clear();
+}
+
+void Game::cleanAllObjects()
+{
+    std::vector<GameObject *> to_be_deleted;
+
+    for (auto &entry : objects_)
+    {
+        to_be_deleted.push_back(entry.second);
+    }
+
+    for (auto obj : to_be_deleted)
+    {
+        delete obj;
+    }
+
+    objects_.clear();
 }
 
 std::uint32_t Game::registerSystem(

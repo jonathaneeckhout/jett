@@ -8,11 +8,13 @@ GameObject::GameObject(Game &game) : game_(game)
 {
     entity_ = game.createEntity();
 
-    game.getRegistry().emplace<EventsComponent>(entity_);
+    game.addObject(entity_, this);
 
-    game.getRegistry().emplace<ParentComponent>(entity_);
+    emplace<EventsComponent>();
 
-    game.getRegistry().emplace<ChildrenComponent>(entity_);
+    emplace<ParentComponent>();
+
+    emplace<ChildrenComponent>();
 }
 
 GameObject::~GameObject()
@@ -21,7 +23,23 @@ GameObject::~GameObject()
     unregisterAllUpdateSystems();
     unregisterAllRenderSystems();
 
+    game_.removeObject(entity_);
+
     game_.removeEntity(entity_);
+}
+
+void GameObject::queueDelete()
+{
+    queuedForDeletion_ = true;
+
+    auto &children = game_.getRegistry().get<ChildrenComponent>(entity_);
+    for (auto child_entity : children.children)
+    {
+        auto child = game_.getObject(child_entity);
+        child->queueDelete();
+    }
+
+    game_.queueForDeletion_(entity_);
 }
 
 bool GameObject::addChild(GameObject &child)

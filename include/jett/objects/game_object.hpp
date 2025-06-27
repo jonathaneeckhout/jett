@@ -12,6 +12,8 @@ public:
     GameObject(Game &game);
     virtual ~GameObject();
 
+    void queueDelete();
+
     const entt::entity &getEntity() { return entity_; };
 
     template <typename EventType, auto Handler>
@@ -60,6 +62,8 @@ public:
 protected:
     entt::entity entity_;
     Game &game_;
+
+    bool queuedForDeletion_ = false;
 
     std::vector<std::uint32_t> input_systems_;
     std::vector<std::uint32_t> update_systems_;
